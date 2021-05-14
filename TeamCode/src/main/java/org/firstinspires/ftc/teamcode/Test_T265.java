@@ -23,6 +23,8 @@ public class Test_T265 extends OpMode
         if (slamra == null) {
             slamra = new T265Camera(new Transform2d(), 0.1, hardwareMap.appContext);
         }
+
+        telemetry.addData("Init: slamra=", slamra);
     }
 
     @Override
@@ -42,6 +44,9 @@ public class Test_T265 extends OpMode
         Canvas field = packet.fieldOverlay();
 
         T265Camera.CameraUpdate up = slamra.getLastReceivedCameraUpdate();
+
+        telemetry.addData("Loop: up=", up);
+
         if (up == null) return;
 
         // We divide by 0.0254 to convert meters to inches
@@ -53,6 +58,8 @@ public class Test_T265 extends OpMode
         double x1 = translation.getX() + arrowX  / 2, y1 = translation.getY() + arrowY / 2;
         double x2 = translation.getX() + arrowX, y2 = translation.getY() + arrowY;
         field.strokeLine(x1, y1, x2, y2);
+
+        telemetry.addData("Loop", "Field x1=(%.2f) y1=(%.2f) x2=(%.2f) y2=(%.2f)", x1, y1, x2, y2);
 
         dashboard.sendTelemetryPacket(packet);
     }
